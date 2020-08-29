@@ -10,8 +10,8 @@ class CreateEnrollmentSchema extends Schema {
       table.float("mark").default(0);
       table.timestamp("mark_date").default(this.fn.now());
       table.timestamps();
-      table.integer("student_id").unsigned().notNullable();
-      table.integer("subject_id").unsigned().notNullable();
+      table.integer("student_id").unsigned();
+      table.integer("subject_id").unsigned();
 
       table
         .foreign("student_id")
