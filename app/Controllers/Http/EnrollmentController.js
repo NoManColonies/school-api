@@ -38,13 +38,14 @@ class EnrollmentController {
   }
 
   async store({ request }) {
-    const { mark, student_id, subject_id } = request.body;
+    const { mark } = request.body;
+    // const { mark, student_id, subject_id } = request.body;
 
     const missingKeys = [];
 
     if (!mark) missingKeys.push("mark");
-    if (!student_id) missingKeys.push("mark");
-    if (!subject_id) missingKeys.push("mark");
+    // if (!student_id) missingKeys.push("student_id");
+    // if (!subject_id) missingKeys.push("subject_id");
 
     if (missingKeys.length)
       return {
@@ -57,11 +58,16 @@ class EnrollmentController {
       mark,
       created_at: new Date(),
       updated_at: new Date(),
-      student_id,
-      subject_id,
+      // student_id,
+      // subject_id,
     });
 
-    return { status: 200, error: undefined, data: { name } };
+    return {
+      status: 200,
+      error: undefined,
+      // data: { mark, student_id, subject_id },
+      data: { mark },
+    };
   }
 }
 
