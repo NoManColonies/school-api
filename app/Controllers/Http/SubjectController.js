@@ -36,12 +36,13 @@ class SubjectController {
   }
 
   async store({ request }) {
-    const { title, teacher_id } = request.body;
+    const { title } = request.body;
+    // const { title, teacher_id } = request.body;
 
     const missingKeys = [];
 
-    if (!title) missingKeys.push("titile");
-    if (!teacher_id) missingKeys.push("teacher_id");
+    if (!title) missingKeys.push("title");
+    // if (!teacher_id) missingKeys.push("teacher_id");
 
     if (missingKeys.length)
       return {
@@ -50,9 +51,11 @@ class SubjectController {
         data: undefined,
       };
 
-    await Database.table("subjects").insert({ title, teacher_id });
+    await Database.table("subjects").insert({ title });
+    // await Database.table("subjects").insert({ title, teacher_id });
 
-    return { status: 200, error: undefined, data: { title, teacher_id } };
+    return { status: 200, error: undefined, data: { title } };
+    // return { status: 200, error: undefined, data: { title, teacher_id } };
   }
 }
 
