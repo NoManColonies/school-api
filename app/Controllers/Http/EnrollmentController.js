@@ -69,6 +69,39 @@ class EnrollmentController {
       data: { mark },
     };
   }
+
+  async update({ request }) {
+    const { body, params } = request;
+
+    const { id } = params;
+
+    const { mark } = body;
+
+    const enrollmentID = await Database.table("enrollments")
+      .where({ enrollment_id: id })
+      .update({
+        mark,
+        updated_at: new Date(),
+      });
+
+    const enrollment = await Database.table("enrollments")
+      .where({ enrollment_id: enrollmentID })
+      .first();
+
+    return {
+      status: 200,
+      error: undefined,
+      data: enrollment,
+    };
+  }
+
+  async destroy({ request }) {
+    const { id } = request.params;
+
+    await Database.table("enrollments").where({ enrollment_id: id }).delete();
+
+    return { status: 200, error: undefined, data: { message: "success" } };
+  }
 }
 
 module.exports = EnrollmentController;
