@@ -1,6 +1,7 @@
 "use strict";
 
 const Database = use("Database");
+const Validator = use("Validator");
 
 function numberTypeParamValidator(number) {
   if (Number.isNaN(parseInt(number))) {
@@ -39,23 +40,64 @@ class SubjectController {
     const { title } = request.body;
     // const { title, teacher_id } = request.body;
 
-    const missingKeys = [];
+    const rules = {
+      title: "required",
+    };
 
-    if (!title) missingKeys.push("title");
-    // if (!teacher_id) missingKeys.push("teacher_id");
+    const validation = await Validator.validate(request.body, rules);
 
-    if (missingKeys.length)
-      return {
-        status: 422,
-        error: `${missingKeys} is missing.`,
-        data: undefined,
-      };
+    if (validation.fails())
+      return { status: 422, error: validation.messages(), data: undefined };
+
+    //     const missingKeys = [];
+
+    //     if (!title) missingKeys.push("title");
+    //     // if (!teacher_id) missingKeys.push("teacher_id");
+
+    //     if (missingKeys.length)
+    //       return {
+    //         status: 422,
+    //         error: `${missingKeys} is missing.`,
+    //         data: undefined,
+    //       };
 
     await Database.table("subjects").insert({ title });
     // await Database.table("subjects").insert({ title, teacher_id });
 
     return { status: 200, error: undefined, data: { title } };
     // return { status: 200, error: undefined, data: { title, teacher_id } };
+  }
+
+  async update({ request }) {
+    const { body, params } = request;
+
+    const { id } = params;
+
+    const { title } = body;
+
+    const subjectID = await Database.table("subjects")
+      .where({ subject_id: id })
+      .update({
+        title,
+      });
+
+    const subject = await Database.table("subjects")
+      .where({ subject_id: subjectID })
+      .first();
+
+    return {
+      status: 200,
+      error: undefined,
+      data: subject,
+    };
+  }
+
+  async destroy({ request }) {
+    const { id } = request.params;
+
+    await Database.table("subjects").where({ subject_id: id }).delete();
+
+    return { status: 200, error: undefined, data: { message: "success" } };
   }
 }
 
