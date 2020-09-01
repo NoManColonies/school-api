@@ -46,6 +46,7 @@ class StudentController {
       first_name: "required",
       last_name: "required",
       email: "required|email|unique:students,email",
+      password: "required|min:8",
     };
 
     const validation = await Validator.validate(request.body, rules);
