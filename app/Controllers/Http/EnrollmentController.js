@@ -1,6 +1,7 @@
 "use strict";
 
 const Database = use("Database");
+const Validator = use("Validator");
 
 function numberTypeParamValidator(number) {
   if (Number.isNaN(parseInt(number))) {
@@ -41,18 +42,27 @@ class EnrollmentController {
     const { mark } = request.body;
     // const { mark, student_id, subject_id } = request.body;
 
-    const missingKeys = [];
+    const rules = {
+      mark: "required",
+    };
 
-    if (!mark) missingKeys.push("mark");
+    const validation = await Validator.validate(request.body, rules);
+
+    if (validation.fails())
+      return { status: 422, error: validation.messages(), data: undefined };
+
+    //     const missingKeys = [];
+
+    //     if (!mark) missingKeys.push("mark");
     // if (!student_id) missingKeys.push("student_id");
     // if (!subject_id) missingKeys.push("subject_id");
 
-    if (missingKeys.length)
-      return {
-        status: 422,
-        error: `${missingKeys} is missing.`,
-        data: undefined,
-      };
+    //     if (missingKeys.length)
+    //       return {
+    //         status: 422,
+    //         error: `${missingKeys} is missing.`,
+    //         data: undefined,
+    //       };
 
     await Database.table("enrollments").insert({
       mark,
