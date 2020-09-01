@@ -1,6 +1,7 @@
 "use strict";
 
 const Database = use("Database");
+const Validator = use("Validator");
 
 function numberTypeParamValidator(number) {
   if (Number.isNaN(parseInt(number))) {
@@ -40,8 +41,17 @@ class GroupController {
   async store({ request }) {
     const { name } = request.body;
 
-    if (!name)
-      return { status: 422, error: "name is missing.", data: undefined };
+    const rules = {
+      name: "required",
+    };
+
+    const validation = await Validator.validate(request.body, rules);
+
+    if (validation.fails())
+      return { status: 422, error: validation.messages(), data: undefined };
+
+    //     if (!name)
+    //       return { status: 422, error: "name is missing.", data: undefined };
 
     await Database.table("groups").insert({
       name,
