@@ -49,7 +49,7 @@ class StudentController {
       password: "required|min:8",
     };
 
-    const validation = await Validator.validate(request.body, rules);
+    const validation = await Validator.validateAll(request.body, rules);
 
     if (validation.fails())
       return { status: 422, error: validation.messages(), data: undefined };

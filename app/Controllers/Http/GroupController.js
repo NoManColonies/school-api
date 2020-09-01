@@ -45,7 +45,7 @@ class GroupController {
       name: "required",
     };
 
-    const validation = await Validator.validate(request.body, rules);
+    const validation = await Validator.validateAll(request.body, rules);
 
     if (validation.fails())
       return { status: 422, error: validation.messages(), data: undefined };
