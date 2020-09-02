@@ -29,21 +29,25 @@ Route.group(() => {
   // Route.put("/teachers/:id", "TeacherController.update");
   // Route.patch("/teachers/:id", "TeacherController.update");
   // Route.delete("/teachers/:id", "TeacherController.destroy");
+
   // -- Route for students
   Route.resource("/students", "StudentController");
   // Route.get("/students", "StudentController.index");
   // Route.get("/students/:id", "StudentController.show");
   // Route.post("/students", "StudentController.store");
+
   // -- Route for subjects
   Route.resource("/subjects", "SubjectController");
   // Route.get("/subjects", "SubjectController.index");
   // Route.get("/subjects/:id", "SubjectController.show");
   // Route.post("/subjects", "SubjectController.store");
+
   // -- Route for groups
   Route.resource("/groups", "GroupController");
   // Route.get("/groups", "GroupController.index");
   // Route.get("/groups/:id", "GroupController.show");
   // Route.post("/groups", "GroupController.store");
+
   // -- Route for enrollments
   Route.resource("/enrollments", "EnrollmentController");
   // Route.get("/enrollments", "EnrollmentController.index");
