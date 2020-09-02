@@ -35,12 +35,7 @@ class GroupController {
     if (validatedValue.error)
       return { status: 500, error: validatedValue.error, data: undefined };
 
-    const group = await Database.select("*")
-      .from("groups")
-      .where({
-        group_id: id,
-      })
-      .first();
+    const group = await Group.find(id);
 
     return { status: 200, error: undefined, data: group || {} };
   }

@@ -36,12 +36,7 @@ class TeacherController {
     if (validatedValue.error)
       return { status: 500, error: validatedValue.error, data: undefined };
 
-    const teacher = await Database.select("*")
-      .from("teachers")
-      .where({
-        teacher_id: id,
-      })
-      .first();
+    const teacher = await Teacher.find(id);
 
     return { status: 200, error: undefined, data: teacher || {} };
   }

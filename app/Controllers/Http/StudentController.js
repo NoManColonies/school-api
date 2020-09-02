@@ -36,12 +36,7 @@ class StudentController {
     if (validatedValue.error)
       return { status: 500, error: validatedValue.error, data: undefined };
 
-    const student = await Database.select("*")
-      .from("students")
-      .where({
-        student_id: id,
-      })
-      .first();
+    const student = await Student.find(id);
 
     return { status: 200, error: undefined, data: student || {} };
   }

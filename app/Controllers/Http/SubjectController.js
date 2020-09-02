@@ -36,10 +36,7 @@ class SubjectController {
     if (validatedValue.error)
       return { status: 500, error: validatedValue.error, data: undefined };
 
-    const subject = await Database.select("*")
-      .from("subjects")
-      .where({ subject_id: id })
-      .first();
+    const subject = await Subject.find(id);
 
     return { status: 200, error: undefined, data: subject || {} };
   }

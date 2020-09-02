@@ -39,12 +39,7 @@ class EnrollmentController {
     if (validatedValue.error)
       return { status: 500, error: validatedValue.error, data: undefined };
 
-    const enrollment = await Database.select("*")
-      .from("enrollments")
-      .where({
-        enrollment_id: id,
-      })
-      .first();
+    const enrollment = await Enrollment.find(id);
 
     return { status: 200, error: undefined, data: enrollment || {} };
   }
