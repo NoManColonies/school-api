@@ -79,16 +79,11 @@ class EnrollmentController {
 
     const { mark } = body;
 
-    const enrollmentID = await Database.table("enrollments")
-      .where({ enrollment_id: id })
-      .update({
-        mark,
-        updated_at: new Date(),
-      });
+    const enrollment = await Enrollment.find(id);
 
-    const enrollment = await Database.table("enrollments")
-      .where({ enrollment_id: enrollmentID })
-      .first();
+    enrollment.merge({ mark });
+
+    await enrollment.save();
 
     return {
       status: 200,
