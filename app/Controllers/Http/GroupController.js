@@ -44,7 +44,7 @@ class GroupController {
     const { name } = request.body;
 
     const rules = {
-      name: "required",
+      name: "required|unique:groups,name",
     };
 
     const validation = await Validator.validateAll(request.body, rules);
@@ -52,14 +52,12 @@ class GroupController {
     if (validation.fails())
       return { status: 422, error: validation.messages(), data: undefined };
 
-    //     if (!name)
-    //       return { status: 422, error: "name is missing.", data: undefined };
+    const group = new Group();
+    group.name = name;
 
-    await Database.table("groups").insert({
-      name,
-    });
+    await group.save();
 
-    return { status: 200, error: undefined, data: { name } };
+    return { status: 200, error: undefined, data: group };
   }
 
   async update({ request }) {
