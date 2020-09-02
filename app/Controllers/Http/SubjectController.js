@@ -70,15 +70,11 @@ class SubjectController {
 
     const { title } = body;
 
-    const subjectID = await Database.table("subjects")
-      .where({ subject_id: id })
-      .update({
-        title,
-      });
+    const subject = await Subject.find(id);
 
-    const subject = await Database.table("subjects")
-      .where({ subject_id: subjectID })
-      .first();
+    subject.merge({ title });
+
+    await subject.save();
 
     return {
       status: 200,
