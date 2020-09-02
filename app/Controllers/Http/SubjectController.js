@@ -42,11 +42,11 @@ class SubjectController {
   }
 
   async store({ request }) {
-    const { title } = request.body;
-    // const { title, teacher_id } = request.body;
+    const { title, teacher_id } = request.body;
 
     const rules = {
       title: "required",
+      teacher_id: "required",
     };
 
     const validation = await Validator.validateAll(request.body, rules);
@@ -54,23 +54,13 @@ class SubjectController {
     if (validation.fails())
       return { status: 422, error: validation.messages(), data: undefined };
 
-    //     const missingKeys = [];
+    const subject = new Subject();
+    subject.title = title;
+    subject.teacher_id = teacher_id;
 
-    //     if (!title) missingKeys.push("title");
-    //     // if (!teacher_id) missingKeys.push("teacher_id");
+    await subject.save();
 
-    //     if (missingKeys.length)
-    //       return {
-    //         status: 422,
-    //         error: `${missingKeys} is missing.`,
-    //         data: undefined,
-    //       };
-
-    await Database.table("subjects").insert({ title });
-    // await Database.table("subjects").insert({ title, teacher_id });
-
-    return { status: 200, error: undefined, data: { title } };
-    // return { status: 200, error: undefined, data: { title, teacher_id } };
+    return { status: 200, error: undefined, data: subject };
   }
 
   async update({ request }) {
