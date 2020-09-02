@@ -80,19 +80,13 @@ class StudentController {
 
     const { id } = params;
 
-    const { first_name, last_name, email } = body;
+    const { first_name, last_name, email, group_id } = body;
 
-    const studentID = await Database.table("students")
-      .where({ student_id: id })
-      .update({
-        first_name,
-        last_name,
-        email,
-      });
+    const student = await Student.find(id);
 
-    const student = await Database.table("students")
-      .where({ student_id: studentID })
-      .first();
+    student.merge({ first_name, last_name, email, group_id });
+
+    await student.save();
 
     return {
       status: 200,
