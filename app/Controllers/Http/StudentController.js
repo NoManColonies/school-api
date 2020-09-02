@@ -42,13 +42,14 @@ class StudentController {
   }
 
   async store({ request }) {
-    const { first_name, last_name, email, password } = request.body;
+    const { first_name, last_name, email, password, group_id } = request.body;
 
     const rules = {
       first_name: "required",
       last_name: "required",
       email: "required|email|unique:students,email",
       password: "required|min:8",
+      group_id: "required",
     };
 
     const validation = await Validator.validateAll(request.body, rules);
@@ -56,36 +57,21 @@ class StudentController {
     if (validation.fails())
       return { status: 422, error: validation.messages(), data: undefined };
 
-    //     const missingKeys = [];
-
-    //     if (!first_name) missingKeys.push("first_name");
-    //     if (!last_name) missingKeys.push("last_name");
-    //     if (!email) missingKeys.push("email");
-    //     if (!password) missingKeys.push("password");
-
-    //     if (missingKeys.length) {
-    //       return {
-    //         status: 422,
-    //         error: `${missingKeys} is missing.`,
-    //         data: undefined,
-    //       };
-    //     }
-
     const hashedPassword = await Hash.make(password);
 
-    await Database.table("students").insert({
-      first_name,
-      last_name,
-      email,
-      password: hashedPassword,
-      created_at: new Date(),
-      updated_at: new Date(),
-    });
+    const student = new Student();
+    student.first_name = first_name;
+    student.last_name = last_name;
+    student.email = email;
+    student.password = hashedPassword;
+    student.group_id = group_id;
+
+    await student.save();
 
     return {
       status: 200,
       error: undefined,
-      data: { first_name, last_name, email },
+      data: student,
     };
   }
 
