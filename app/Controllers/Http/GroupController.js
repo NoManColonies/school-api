@@ -67,15 +67,11 @@ class GroupController {
 
     const { name } = body;
 
-    const groupID = await Database.table("groups")
-      .where({ group_id: id })
-      .update({
-        name,
-      });
+    const group = await Group.find(id);
 
-    const group = await Database.table("groups")
-      .where({ group_id: groupID })
-      .first();
+    group.merge({ name });
+
+    await group.save();
 
     return {
       status: 200,
