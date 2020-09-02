@@ -15,10 +15,16 @@ function numberTypeParamValidator(number) {
 }
 
 class GroupController {
-  async index() {
-    const data = await Database.table("groups");
+  async index({ request }) {
+    const { references } = request.qs;
+    const groups = Group.query();
 
-    return data;
+    if (references) {
+      const extractedReferences = references.split(",");
+      groups.with(extractedReferences);
+    }
+
+    return { status: 200, error: undefined, data: await groups.fetch() };
   }
 
   async show({ request }) {

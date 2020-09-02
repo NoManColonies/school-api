@@ -15,10 +15,17 @@ function numberTypeParamValidator(number) {
 }
 
 class SubjectController {
-  async index() {
-    const data = await Database.table("subjects");
+  async index({ request }) {
+    const { references = undefined } = request.qs;
 
-    return data;
+    const subjects = Subject.query();
+
+    if (references) {
+      const extractedReferences = references.split(",");
+      subjects.with(extractedReferences);
+    }
+
+    return { status: 200, error: undefined, data: await subjects.fetch() };
   }
 
   async show({ request }) {

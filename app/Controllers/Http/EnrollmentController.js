@@ -15,10 +15,20 @@ function numberTypeParamValidator(number) {
 }
 
 class EnrollmentController {
-  async index() {
-    const data = await Database.table("enrollments");
+  async index({ request }) {
+    const { references } = request.qs;
 
-    return data;
+    const enrollments = Enrollment.query();
+
+    if (references) {
+      const extractedReferences = references.split(",");
+
+      extractedReferences.forEach((value) => {
+        enrollments.with(value);
+      });
+    }
+
+    return { status: 200, error: undefined, data: await enrollments.fetch() };
   }
 
   async show({ request }) {

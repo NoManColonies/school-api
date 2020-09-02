@@ -16,10 +16,16 @@ function numberTypeParamValidator(number) {
 }
 
 class StudentController {
-  async index() {
-    const students = await Database.table("students");
+  async index({ request }) {
+    const { references } = request.qs;
+    const students = Student.query();
 
-    return students;
+    if (references) {
+      const extractedReferences = references.split(",");
+      students.with(extractedReferences);
+    }
+
+    return { status: 200, error: undefined, data: await students.fetch() };
   }
 
   async show({ request }) {
