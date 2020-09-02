@@ -56,20 +56,6 @@ class TeacherController {
     if (validation.fails())
       return { status: 422, error: validation.messages(), data: undefined };
 
-    //     const missingKey = [];
-
-    //     if (!first_name) missingKey.push("first_name");
-    //     if (!last_name) missingKey.push("last_name");
-    //     if (!email) missingKey.push("email");
-    //     if (!password) missingKey.push("password");
-
-    //     if (missingKey.length)
-    //       return {
-    //         status: 422,
-    //         error: `${missingKey} is missing.`,
-    //         data: undefined,
-    //       };
-
     const hashedPassword = await Hash.make(password);
 
     await Database.table("teachers").insert({
