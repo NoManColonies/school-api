@@ -2,6 +2,7 @@
 
 const Database = use("Database");
 const Validator = use("Validator");
+const Enrollment = use("App/Models/Enrollment");
 
 function numberTypeParamValidator(number) {
   if (Number.isNaN(parseInt(number))) {

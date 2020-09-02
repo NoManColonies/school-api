@@ -3,6 +3,7 @@
 const Database = use("Database");
 const Hash = use("Hash");
 const Validator = use("Validator");
+const Teacher = use("App/Models/Teacher");
 
 function numberTypeParamValidator(number) {
   if (Number.isNaN(parseInt(number))) {
