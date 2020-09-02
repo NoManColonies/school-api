@@ -38,6 +38,7 @@ Route.group(() => {
 
   // -- Route for subjects
   Route.resource("/subjects", "SubjectController");
+  Route.get("/subjects/:id/teacher", "SubjectController.showTeacher");
   // Route.get("/subjects", "SubjectController.index");
   // Route.get("/subjects/:id", "SubjectController.show");
   // Route.post("/subjects", "SubjectController.store");
