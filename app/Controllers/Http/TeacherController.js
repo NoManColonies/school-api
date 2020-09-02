@@ -80,17 +80,11 @@ class TeacherController {
 
     const { first_name, last_name, email } = body;
 
-    const teacherID = await Database.table("teachers")
-      .where({ teacher_id: id })
-      .update({
-        first_name,
-        last_name,
-        email,
-      });
+    const teacher = await Teacher.find(id);
 
-    const teacher = await Database.table("teachers")
-      .where({ teacher_id: teacherID })
-      .first();
+    teacher.merge({ first_name, last_name, email });
+
+    await teacher.save();
 
     return {
       status: 200,
