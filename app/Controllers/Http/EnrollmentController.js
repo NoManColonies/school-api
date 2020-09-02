@@ -45,11 +45,12 @@ class EnrollmentController {
   }
 
   async store({ request }) {
-    const { mark } = request.body;
-    // const { mark, student_id, subject_id } = request.body;
+    const { mark, student_id, subject_id } = request.body;
 
     const rules = {
       mark: "required",
+      student_id: "required",
+      subject_id: "required",
     };
 
     const validation = await Validator.validateAll(request.body, rules);
@@ -57,32 +58,17 @@ class EnrollmentController {
     if (validation.fails())
       return { status: 422, error: validation.messages(), data: undefined };
 
-    //     const missingKeys = [];
+    const enrollment = new Enrollment();
+    enrollment.mark = mark;
+    enrollment.student_id = student_id;
+    enrollment.subject_id = subject_id;
 
-    //     if (!mark) missingKeys.push("mark");
-    // if (!student_id) missingKeys.push("student_id");
-    // if (!subject_id) missingKeys.push("subject_id");
-
-    //     if (missingKeys.length)
-    //       return {
-    //         status: 422,
-    //         error: `${missingKeys} is missing.`,
-    //         data: undefined,
-    //       };
-
-    await Database.table("enrollments").insert({
-      mark,
-      created_at: new Date(),
-      updated_at: new Date(),
-      // student_id,
-      // subject_id,
-    });
+    await enrollment.save();
 
     return {
       status: 200,
       error: undefined,
-      // data: { mark, student_id, subject_id },
-      data: { mark },
+      data: enrollment,
     };
   }
 
