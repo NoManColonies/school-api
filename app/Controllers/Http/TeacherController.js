@@ -58,19 +58,18 @@ class TeacherController {
 
     const hashedPassword = await Hash.make(password);
 
-    await Database.table("teachers").insert({
-      first_name,
-      last_name,
-      email,
-      password: hashedPassword,
-      created_at: new Date(),
-      updated_at: new Date(),
-    });
+    const teacher = new Teacher();
+    teacher.first_name = first_name;
+    teacher.last_name = last_name;
+    teacher.email = email;
+    teacher.password = hashedPassword;
+
+    await teacher.save();
 
     return {
       status: 200,
       error: undefined,
-      data: { first_name, last_name, email },
+      data: teacher,
     };
   }
 
