@@ -11,7 +11,6 @@ class CreateTeacherSchema extends Schema {
       table.string("last_name", 120).notNullable();
       table.string("password").notNullable();
       table.string("email").notNullable().unique();
-      table.integer("group_id").unsigned();
       table.timestamps();
     });
   }
