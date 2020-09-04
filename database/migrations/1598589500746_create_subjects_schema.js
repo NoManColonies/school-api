@@ -8,7 +8,7 @@ class CreateSubjectsSchema extends Schema {
     this.create("subjects", (table) => {
       table.increments("subject_id");
       table.string("title", 120).unique();
-      table.integer("teacher_id").unsigned().unique();
+      table.integer("teacher_id").unsigned();
 
       table
         .foreign("teacher_id")

@@ -15,6 +15,10 @@ class Student extends Model {
   enrollments() {
     return this.hasMany("App/Models/Enrollment");
   }
+
+  subjects() {
+    return this.hasMany("App/Models/Subject");
+  }
 }
 
 module.exports = Student;

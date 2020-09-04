@@ -26,6 +26,10 @@ class EnrollmentController {
       extractedReferences.forEach((value) => {
         enrollments.with(value);
       });
+
+      // enrollments.then((data) => {
+      //   return data.with(["groups"]);
+      // });
     }
 
     return { status: 200, error: undefined, data: await enrollments.fetch() };
